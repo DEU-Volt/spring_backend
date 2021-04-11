@@ -1,4 +1,4 @@
-package deu.se.volt.eurekaserver;
+package deu.se.volt.eurekaserver_replication;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

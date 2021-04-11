@@ -1,4 +1,4 @@
-package deu.se.volt.eurekaserver;
+package deu.se.volt.eurekaserver_replication;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
