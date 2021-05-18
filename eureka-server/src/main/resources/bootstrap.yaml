@@ -1,0 +1,31 @@
+
+spring:
+  application:
+    name: eureka-server
+  cloud:
+    config:
+      uri: http://localhost:8088
+  config:
+      activate:
+        on-profile: master
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+---
+
+spring:
+  application:
+    name: eureka-server
+  cloud:
+    config:
+      uri: http://localhost:8088
+  config:
+      activate:
+        on-profile: replication
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

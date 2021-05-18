@@ -1,6 +1,2 @@
-spring:
-  application:
-    name: spring-admin
-
-server:
-    port: 8081
+#server:
+#  port: 8081

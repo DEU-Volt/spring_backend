@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: spring-admin
+  cloud:
+    config:
+      uri: http://localhost:8088
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
