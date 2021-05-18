@@ -1,27 +1,30 @@
+server:
+  port: 8088
 spring:
   application:
-    name: product-service
+    name: config-server
   boot:
     admin:
       client:
-        url: http://localhost:8081
-#  config:
-#    import: http://localhost:8088
+        url: http://127.0.0.1:8081
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/DEU-Volt/spring-cloud-config-repository
+          default-label: master
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-server:
-  port: 18081
 
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/, http://localhost2:8762/eureka/
 #      defaultZone: http://localhost:8761/eureka/
-
       register-with-eureka: false
       fetch-registry: false
     initialInstanceInfoReplicationIntervalSeconds: 5
