@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: gateway
+  boot:
+    admin:
+      client:
+        url: http://localhost:8081
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    gateway:
+      enabled: true
