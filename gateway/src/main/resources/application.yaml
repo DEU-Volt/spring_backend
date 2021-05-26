@@ -1,39 +1,45 @@
 server:
   port: 8080
 
-spring.cloud.gateway.routes:
-- id: product-service
-  uri: lb://product-service
-  predicates:
-    - Path=/product-service/**
-
-- id: spring-admin-api
-  uri: http://localhost:8081
-  predicates:
-    - Path=/**
-  filter:
-    - SetPath=/**
-
-
-
-- id: eureka-api
-  uri: lb://eureka-server
-  predicates:
-    - Path=/eureka/api/{segment}
-  filters:
-    - SetPath=/eureka/{segment}
-
-- id: eureka-web-start
-  uri: lb://eureka-server
-  predicates:
-    - Path=/eureka/web
-  filters:
-    - SetPath=/
-
-- id: eureka-web-other
-  uri: lb://eureka-server
-  predicates:
-    - Path=/eureka/**
+zuul:
+  routes:
+    product-service:
+      path: /product/**
+      serviceId: product-service
+  sensitiveHeaders: Cookie,Set-Cookie
+#spring.cloud.gateway.routes:
+#- id: product-service
+#  uri: lb://product-service
+#  predicates:
+#    - Path=/product-service/**
+#
+#- id: spring-admin-api
+#  uri: http://localhost:8081
+#  predicates:
+#    - Path=/**
+#  filter:
+#    - SetPath=/**
+#
+#
+#
+#- id: eureka-api
+#  uri: lb://eureka-server
+#  predicates:
+#    - Path=/eureka/api/{segment}
+#  filters:
+#    - SetPath=/eureka/{segment}
+#
+#- id: eureka-web-start
+#  uri: lb://eureka-server
+#  predicates:
+#    - Path=/eureka/web
+#  filters:
+#    - SetPath=/
+#
+#- id: eureka-web-other
+#  uri: lb://eureka-server
+#  predicates:
+#    - Path=/eureka/**
 
 eureka:
   client:

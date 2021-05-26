@@ -6,7 +6,6 @@ spring:
       client:
         url: http://127.0.0.1:8081
 
-
 #eureka:
 #  client:
 #    serviceUrl:
