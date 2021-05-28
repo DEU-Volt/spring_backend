@@ -23,7 +23,8 @@ security:
   oauth2:
     authorization:
 #      check-token-access: isAuthenticated()
-      check-token-access: permitAll()
+#      check-token-access: permitAll()
+
 
 #    client:
 #      client-id: volt-android

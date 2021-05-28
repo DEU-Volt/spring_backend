@@ -9,11 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
 import javax.sql.DataSource;
 
 @Configuration
@@ -32,6 +33,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private PasswordEncoder passwordEncoder;
 
     @Autowired
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
+
+    @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
@@ -40,14 +44,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
-//                .passwordEncoder(passwordEncoder)
+                .passwordEncoder(passwordEncoder)
                 .tokenKeyAccess("permitAll()")
 //                .checkTokenAccess("isAuthenticated()")
                 .checkTokenAccess("permitAll()")
+
                 .allowFormAuthenticationForClients();
     }
-
-    @Override public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.jdbc(dataSource)
                 .withClient("volt-android")
                 .secret(passwordEncoder.encode("volt"))
@@ -57,12 +62,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .refreshTokenValiditySeconds(6*60*60);
     }
 
-    @Override public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore)
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints.accessTokenConverter(jwtAccessTokenConverter)
+                .tokenStore(tokenStore)
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService)
                 .approvalStore(approvalStore);
-
 
     }
 

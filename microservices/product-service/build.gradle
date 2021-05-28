@@ -36,6 +36,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'de.codecentric:spring-boot-admin-starter-client'
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+    implementation group: 'org.springframework.security', name: 'spring-security-jwt'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

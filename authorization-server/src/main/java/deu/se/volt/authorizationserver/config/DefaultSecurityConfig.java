@@ -1,7 +1,6 @@
 package deu.se.volt.authorizationserver.config;
 
-import deu.se.volt.authorizationserver.service.UserDetailsServiceImpl;
-import deu.se.volt.authorizationserver.util.CustomJdbcTokenStore;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,11 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.JdbcApprovalStore;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 
@@ -34,6 +33,17 @@ public class DefaultSecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource(name="userDetailsServiceImpl")
     private UserDetailsService userDetailsService;
 
+    @Bean
+    public TokenStore tokenStore() {
+        return new JwtTokenStore(accessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("volt_secret");
+        return converter;
+    }
 
     @Bean
     @Override
@@ -45,10 +55,7 @@ public class DefaultSecurityConfig extends WebSecurityConfigurerAdapter {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Bean
-    public TokenStore tokenStore() {
-        return new CustomJdbcTokenStore(dataSource);
-    }
+
 
     @Bean
     public ApprovalStore approvalStore() {
