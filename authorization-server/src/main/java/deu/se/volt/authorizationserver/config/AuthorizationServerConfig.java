@@ -53,7 +53,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(dataSource)
+        clients
+                .inMemory()
+//                .jdbc(dataSource)
                 .withClient("volt-android")
                 .secret(passwordEncoder.encode("volt"))
                 .authorizedGrantTypes( "password", "client_credentials", " implicit", "refresh_token")
