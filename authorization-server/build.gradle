@@ -41,6 +41,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-oauth2', version: '2.2.5.RELEASE'
     implementation group: 'org.springframework.security', name: 'spring-security-jwt'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
 }
 

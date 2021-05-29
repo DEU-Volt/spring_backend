@@ -1,0 +1,32 @@
+server:
+  port: 9093
+
+spring:
+  profiles:
+    active: dev
+  application:
+    name: swagger-server
+#  cloud:
+#    config:
+#      uri: http://localhost:8088
+
+#security:
+#  oauth2:
+#    client:
+#      client-id: volt-android
+#      client-secret: volt
+#    authorization:
+#      token-key-access: isAuthenticated()
+#    resource:
+#      #      token-info-uri: http://localhost:9000/oauth/check_token
+#      jwt:
+#        key-uri: http://localhost:9000/oauth/token_key
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+swagger:
+  config:
+    refreshrate: 5000

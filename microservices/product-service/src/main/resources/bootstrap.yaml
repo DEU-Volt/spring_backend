@@ -1,11 +1,27 @@
+server:
+  port: 18081
 spring:
+  boot:
+    admin:
+      client:
+        url: http://localhost:8081
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/, http://localhost2:8762/eureka/
+      register-with-eureka: false
+      fetch-registry: false
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
   profiles:
     active: dev
   application:
     name: product-service
-  cloud:
-    config:
-      uri: http://localhost:8088
 
 security:
   oauth2:
@@ -18,6 +34,7 @@ security:
 #      token-info-uri: http://localhost:9000/oauth/check_token
       jwt:
         key-uri: http://localhost:9000/oauth/token_key
+
 management:
   endpoints:
     web:
