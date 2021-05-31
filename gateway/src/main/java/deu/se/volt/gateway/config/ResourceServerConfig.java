@@ -13,11 +13,11 @@ import org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHand
 @EnableZuulProxy
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override public void configure(HttpSecurity http) throws Exception
-    { http.anonymous()
-
-            .disable()
+    { http
+//            .anonymous()
+//            .disable()
             .authorizeRequests()
-            .antMatchers("/oauth/**")
+            .antMatchers("/oauth/**","/v2/api-docs","/api/**")
             .permitAll()
             .antMatchers("/**")
             .authenticated()

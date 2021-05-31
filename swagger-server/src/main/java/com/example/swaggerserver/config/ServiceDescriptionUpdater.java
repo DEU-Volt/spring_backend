@@ -55,7 +55,7 @@ public class ServiceDescriptionUpdater {
                     String content = getJSON(serviceId, jsonData.get());
                     definitionContext.addServiceDefinition(serviceId, content);
                 }else{
-                    logger.error("Skipping service id : {} Error : Could not get Swagegr definition from API ",serviceId);
+                    logger.error("Skipping service id : {} Error : Could not get Swagger definition from API ",serviceId);
                 }
 
                 logger.info("Service Definition Context Refreshed at :  {}", LocalDate.now());
