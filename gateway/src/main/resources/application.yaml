@@ -1,7 +1,5 @@
-server:
-  port: 8080
-
 zuul:
+  sensitiveHeaders: Cookie,Set-Cookie
   routes:
     product-service:
       path: /product/**
@@ -14,9 +12,18 @@ zuul:
       serviceId: swagger-server
       stripPrefix: true
       url: swagger-server
-  sensitiveHeaders: Cookie,Set-Cookie
 
+    authorization-server:
+      path: /user
+      serviceId: authorization-server
+      stripPrefix: false
+      url : authorization-server
 
+    authorization-server-oauth:
+      path: /oauth/**
+      serviceId: authorization-server
+      stripPrefix: false
+      url: authorization-server
 
 security:
   oauth2:
@@ -29,40 +36,6 @@ security:
       #      token-info-uri: http://localhost:9000/oauth/check_token
       jwt:
         key-uri: http://localhost:9000/oauth/token_key
-#spring.cloud.gateway.routes:
-#- id: product-service
-#  uri: lb://product-service
-#  predicates:
-#    - Path=/product-service/**
-#
-#- id: spring-admin-api
-#  uri: http://localhost:8081
-#  predicates:
-#    - Path=/**
-#  filter:
-#    - SetPath=/**
-#
-#
-#
-#- id: eureka-api
-#  uri: lb://eureka-server
-#  predicates:
-#    - Path=/eureka/api/{segment}
-#  filters:
-#    - SetPath=/eureka/{segment}
-#
-#- id: eureka-web-start
-#  uri: lb://eureka-server
-#  predicates:
-#    - Path=/eureka/web
-#  filters:
-#    - SetPath=/
-#
-#- id: eureka-web-other
-#  uri: lb://eureka-server
-#  predicates:
-#    - Path=/eureka/**
-
 eureka:
   client:
     serviceUrl:

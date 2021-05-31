@@ -1,5 +1,9 @@
 
 spring:
+  security:
+    user:
+      name: test
+      password: test
   application:
     name: eureka-server
   cloud:
