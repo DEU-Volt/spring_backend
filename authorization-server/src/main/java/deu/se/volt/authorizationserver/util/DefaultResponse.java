@@ -24,6 +24,10 @@ public class DefaultResponse<T> {
         this.data = null;
     }
 
+    public static<T> DefaultResponse res (final int statusCode, final String responseMessage) {
+        return res(statusCode, responseMessage, null);
+    }
+
     public static<T> DefaultResponse res (final int statusCode, final String responseMessage, final T t) {
         return DefaultResponse.<T>builder()
                 .data(t)
