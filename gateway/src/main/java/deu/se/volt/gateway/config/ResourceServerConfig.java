@@ -17,7 +17,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 //            .anonymous()
 //            .disable()
             .authorizeRequests()
-            .antMatchers("/oauth/**","/v2/api-docs","/api/**","/user")
+            .antMatchers("/oauth/**","/v2/api-docs","/api/**","/user", "/user/email")
             .permitAll()
             .antMatchers("/**")
             .authenticated()

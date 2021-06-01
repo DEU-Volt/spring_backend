@@ -14,7 +14,7 @@ zuul:
       url: swagger-server
 
     authorization-server:
-      path: /user
+      path: /user/**
       serviceId: authorization-server
       stripPrefix: false
       url : authorization-server

@@ -1,7 +1,10 @@
 package deu.se.volt.authorizationserver.service;
 
+import com.mysql.cj.log.Log;
 import deu.se.volt.authorizationserver.entity.User;
 import deu.se.volt.authorizationserver.repository.UserAuthRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,8 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.PostConstruct;
+;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -33,9 +35,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userAuthRepository.save(user);
     }
 
-    @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    @Override
+    public User loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userAuthRepository.findByUsername(username);
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities());
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities());
+        return user;
+    }
+
+    public User loadUserByEmail(String email) throws UsernameNotFoundException {
+        User user = userAuthRepository.findByEmail(email);
+        return user;
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities() {
