@@ -28,14 +28,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return userAuthRepository.findAll();
     }
 
-    public User save (User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userAuthRepository.save(user);
+    /*
+        User Entity Save Function
+     */
+    public Boolean save (User user) {
+        // ID 중복검사
+
+        if (loadUserByUsername(user.getUsername()) == null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            userAuthRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
     @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userAuthRepository.findByUsername(username);
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthorities());
+        return userAuthRepository.findByUsername(username);
     }
 
     private Collection<? extends GrantedAuthority> getAuthorities() {
