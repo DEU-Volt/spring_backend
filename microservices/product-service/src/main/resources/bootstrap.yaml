@@ -1,8 +1,24 @@
 server:
   port: 18081
 spring:
+  profiles:
+    active: dev
   application:
     name: product-service
+  jpa:
+    database: mysql
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3308/spring?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
   boot:
     admin:
       client:
@@ -20,10 +36,7 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
 
-  profiles:
-    active: dev
-  application:
-    name: product-service
+
 
 security:
   oauth2:
