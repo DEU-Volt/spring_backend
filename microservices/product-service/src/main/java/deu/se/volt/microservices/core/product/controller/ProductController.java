@@ -6,6 +6,7 @@ import deu.se.volt.microservices.core.product.service.ProductService;
 import deu.se.volt.microservices.core.product.util.DefaultResponse;
 import deu.se.volt.microservices.core.product.util.ResponseMessage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,11 @@ public class ProductController {
     /*
         GET / 상품명으로 상품조회 / Return : Product
      */
-    @ApiOperation(value = "test", notes = "테스트입니다.")
+    @ApiOperation(value = "상품명으로 조회", tags = "상품 관리",
+            httpMethod = "GET",
+            notes = "상품명을 사용하여 상품을 조회할 때 사용되는 API입니다."
+    )
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
     @GetMapping("/product/prd/{productName}")
     public ResponseEntity getProductByProductName(@PathVariable("productName") @Valid final String productName) {
 
@@ -53,6 +58,11 @@ public class ProductController {
     /*
         GET / 모델명으로 상품 조회 / Return : Product
     */
+    @ApiOperation(value = "모델명으로 조회", tags = "상품 관리",
+            httpMethod = "GET",
+            notes = "모델명을 사용하여 상품을 조회할 때 사용되는 API입니다."
+    )
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
     @GetMapping("/product/model/{modelName}")
     public ResponseEntity getProductByModelName(@PathVariable("modelName") @Valid final String modelName) {
 
