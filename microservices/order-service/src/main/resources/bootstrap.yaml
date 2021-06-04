@@ -1,10 +1,10 @@
 server:
-  port: 18081
+  port: 18082
 spring:
   profiles:
     active: dev
   application:
-    name: product-service
+    name: order-service
   jpa:
     database: mysql
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
