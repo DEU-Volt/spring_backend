@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,9 +22,12 @@ import java.util.NoSuchElementException;
 public class ProductController {
     private final ProductService productService;
 
+    /*
+        GET / 상품명으로 상품조회 / Return : Product
+     */
     @ApiOperation(value = "test", notes = "테스트입니다.")
-    @GetMapping("/product")
-    public ResponseEntity getProduct(@RequestParam @Valid final String productName) {
+    @GetMapping("/product/prd/{productName}")
+    public ResponseEntity getProductByProductName(@PathVariable("productName") @Valid final String productName) {
 
         try {
             Map<String, Product> map = new HashMap<>();
@@ -46,6 +48,32 @@ public class ProductController {
                     ResponseMessage.NOT_FOUND_PRODUCT,
                     map), HttpStatus.OK);
         }
+    }
 
+    /*
+        GET / 모델명으로 상품 조회 / Return : Product
+    */
+    @GetMapping("/product/model/{modelName}")
+    public ResponseEntity getProductByModelName(@PathVariable("modelName") @Valid final String modelName) {
+
+        try {
+            Map<String, Product> map = new HashMap<>();
+            var product = productService.loadProductByModelName(modelName);
+            map.put("result", product);
+
+            return new ResponseEntity(DefaultResponse.res(
+                    StatusCode.OK,
+                    ResponseMessage.PRODUCT_SUCCESS,
+                    map), HttpStatus.OK);
+
+        } catch (NoSuchElementException elementException) {
+            Map<String, String> map = new HashMap<>();
+            map.put("result","false");
+
+            return new ResponseEntity(DefaultResponse.res(
+                    StatusCode.NOT_FOUND,
+                    ResponseMessage.NOT_FOUND_PRODUCT,
+                    map), HttpStatus.OK);
+        }
     }
 }
