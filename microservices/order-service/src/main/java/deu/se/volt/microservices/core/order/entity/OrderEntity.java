@@ -1,60 +1,44 @@
 package deu.se.volt.microservices.core.order.entity;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity
-@Data
+@Getter
+@Setter
+@EqualsAndHashCode(of = "orderIdx", callSuper = true)
 @Table(indexes = @Index(name = "i_modelName",columnList = "modelName"))
-public class OrderEntity {
+public class OrderEntity extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long orderIdx;
+    private Long orderIdx;
 
-    @Column
-    @NotBlank
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    OrderType orderType;
+    private OrderType orderType;
 
-    @Column
-    @NotBlank
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    OrderStatusType orderStatusType = OrderStatusType.CONFIRM;
+    private OrderStatusType orderStatusType;
 
-    @Column
-    @NotBlank
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    ProductGrade productGrade = ProductGrade.NONE;
+    private ProductGrade productGrade;
 
     @Column
-    @NotBlank
-    String username;
+    private String username;
 
-    @Column
-    @NotBlank
-    String modelName;
+    @Column(nullable = false)
+    private String modelName;
 
-    @Column
-    @NotBlank
-    Integer orderPrice;
+    @Column(nullable = false)
+    private Integer orderPrice;
 
-    @CreatedDate
-    @NotBlank
-    @Column
-    private LocalDateTime expired_at;
+    @Column(nullable = false)
+    private LocalDateTime expiredAt;
 
-    @CreatedDate
-    @NotBlank
-    @Column(updatable = false)
-    private LocalDateTime created_at;
 
-    @LastModifiedDate
-    @NotBlank
-    private LocalDateTime updated_at;
 
 }
