@@ -3,37 +3,33 @@ package deu.se.volt.microservices.core.order.controller;
 import deu.se.volt.microservices.core.order.entity.OrderEntity;
 import deu.se.volt.microservices.core.order.entity.OrderStatusType;
 import deu.se.volt.microservices.core.order.entity.OrderType;
+import deu.se.volt.microservices.core.order.form.OrderForm;
 import deu.se.volt.microservices.core.order.service.OrderService;
 import deu.se.volt.microservices.core.order.util.DefaultResponse;
 import deu.se.volt.microservices.core.order.util.ResponseMessage;
 import deu.se.volt.microservices.core.order.util.StatusCode;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.jwt.Jwt;
-import org.springframework.security.jwt.JwtHelper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 @RestController
-@Api("주문 컨트롤러 V1")
 @AllArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
+    private final ModelMapper modelMapper;
     /*
         GET / 사용자 ID로 주문 조회 / Return : OrderEntity
     */
@@ -119,4 +115,54 @@ public class OrderController {
                     map), HttpStatus.OK);
         }
     }
+
+    @PostMapping("/order")
+    public ResponseEntity postOrder(@RequestHeader(value="Authorization") String accessToken, @RequestBody @Valid OrderForm orderForm) {
+         // JWT Token to username
+
+         try {
+             Map<String, OrderEntity> map = new HashMap<>();
+             var orderEntity = orderService.createOrderEntity(modelMapper.map(orderForm, OrderEntity.class));
+             map.put("result", orderService.save(accessToken,orderEntity));
+
+             return new ResponseEntity(DefaultResponse.res(
+                     StatusCode.OK,
+                     ResponseMessage.ORDER_REG_SUCCESS,
+                     map), HttpStatus.OK);
+
+         } catch (NotFoundException notFoundException) {
+             Map<String, String> map = new HashMap<>();
+             map.put("result","false");
+
+             return new ResponseEntity(DefaultResponse.res(
+                     StatusCode.NOT_FOUND,
+                     ResponseMessage.NOT_FOUND_PRODUCT,
+                     map), HttpStatus.OK);
+
+        }
+    }
+
+//    @DeleteMapping("/order/{path}")
+//    public ResponseEntity getProductByProductName(@PathVariable("orderId") @Valid final int orderId) {
+//
+//        try {
+//            Map<String, Product> map = new HashMap<>();
+//            var product = productService.loadProductByProductName(productName);
+//            map.put("result", product);
+//
+//            return new ResponseEntity(DefaultResponse.res(
+//                    StatusCode.OK,
+//                    ResponseMessage.PRODUCT_SUCCESS,
+//                    map), HttpStatus.OK);
+//
+//        } catch (NoSuchElementException elementException) {
+//            Map<String, String> map = new HashMap<>();
+//            map.put("result","false");
+//
+//            return new ResponseEntity(DefaultResponse.res(
+//                    StatusCode.NOT_FOUND,
+//                    ResponseMessage.NOT_FOUND_PRODUCT,
+//                    map), HttpStatus.OK);
+//        }
+//    }
 }

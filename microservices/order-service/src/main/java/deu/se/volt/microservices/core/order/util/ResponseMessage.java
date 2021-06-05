@@ -2,6 +2,7 @@ package deu.se.volt.microservices.core.order.util;
 
 public class ResponseMessage {
     public static final String NOT_FOUND_PRODUCT = "상품을 찾을 수 없습니다.";
+    public static final String ORDER_REG_SUCCESS = "주문 등록 성공";
     public static final String PRODUCT_SUCCESS = "상품 조회 성공";
     public static final String LOGIN_SUCCESS = "로그인 성공";
     public static final String LOGIN_FAIL = "로그인 실패";
