@@ -46,15 +46,15 @@ public class OrderEntity {
     @CreatedDate
     @NotBlank
     @Column
-    private LocalDateTime expired_at;
+    private LocalDateTime expiredAt;
 
     @CreatedDate
     @NotBlank
     @Column(updatable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime createdAt;
 
     @LastModifiedDate
     @NotBlank
-    private LocalDateTime updated_at;
+    private LocalDateTime updatedAt;
 
 }
