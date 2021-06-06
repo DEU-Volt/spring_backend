@@ -1,6 +1,10 @@
 server:
   port: 18083
+
 spring:
+  batch:
+    job:
+      enabled: false
   profiles:
     active: dev
   application:

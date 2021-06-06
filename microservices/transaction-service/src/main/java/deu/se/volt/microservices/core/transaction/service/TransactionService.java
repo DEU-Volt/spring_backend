@@ -6,6 +6,10 @@ import deu.se.volt.microservices.core.transaction.repository.TransactionReposito
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -13,7 +17,14 @@ import org.springframework.stereotype.Service;
 public class TransactionService {
     private final TransactionRepository transactionRepository;
 
-//    public Transaction save(Transaction transaction) {
-//        retur
-//    }
+    public List<Transaction> loadYesterdayAllTransactions() {
+        log.info("loadYesterdayAllTransactions : called");
+        return transactionRepository.findTransactionsByCreatedAtBetweenOrderByModelNameAscCreatedAtAsc
+                (LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0))
+                        ,LocalDateTime.of(LocalDate.now().minusDays(1),LocalTime.of(23,59)));
+    }
+
+
+
 }
+
