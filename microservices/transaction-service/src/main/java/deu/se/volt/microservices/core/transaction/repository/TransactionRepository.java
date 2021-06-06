@@ -10,4 +10,10 @@ import java.util.List;
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
     List<Transaction> findTransactionsByModelName(String modelName);
+
+    List<Transaction> findTransactionsByBuyer(String buyer);
+
+    List<Transaction> findTransactionsBySeller(String seller);
+
+    List<Transaction> findTransactionsByBuyerOrSeller(String userName, String userName2);
 }

@@ -14,4 +14,8 @@ public class ResponseMessage {
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";
     public static final String INPUT_ERROR = "유효하지 않은 입력값이 전달되었습니다";
+    public static final String TRANSACTION_REG_SUCCESS = "내역 등록 성공";
+    public static final String TRANSACTION_SUCCESS = "내역 조회 성공";
+    public static final String NOT_FOUND_TRANSACTION = "내역을 찾을 수 없습니다.";
+
 }
