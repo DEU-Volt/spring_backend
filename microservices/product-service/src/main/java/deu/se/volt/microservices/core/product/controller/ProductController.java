@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -33,18 +34,8 @@ public class ProductController {
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
     @GetMapping("/product/prd/{productName}")
     public ResponseEntity getProductByProductName(@PathVariable("productName") @Valid final String productName) {
-
-        try {
-            Map<String, Product> map = new HashMap<>();
-            var product = productService.loadProductByProductName(productName);
-            map.put("result", product);
-
-            return new ResponseEntity(DefaultResponse.res(
-                    StatusCode.OK,
-                    ResponseMessage.PRODUCT_SUCCESS,
-                    map), HttpStatus.OK);
-
-        } catch (NoSuchElementException elementException) {
+        var products = productService.loadProductByProductName(productName);
+        if (products.isEmpty()) {
             Map<String, String> map = new HashMap<>();
             map.put("result","false");
 
@@ -52,6 +43,15 @@ public class ProductController {
                     StatusCode.NOT_FOUND,
                     ResponseMessage.NOT_FOUND_PRODUCT,
                     map), HttpStatus.OK);
+
+        } else {
+            Map<String, List<Product>> map = new HashMap<>();
+            map.put("result", products);
+            return new ResponseEntity(DefaultResponse.res(
+                    StatusCode.OK,
+                    ResponseMessage.PRODUCT_SUCCESS,
+                    map), HttpStatus.OK);
+
         }
     }
 
@@ -83,6 +83,37 @@ public class ProductController {
             return new ResponseEntity(DefaultResponse.res(
                     StatusCode.NOT_FOUND,
                     ResponseMessage.NOT_FOUND_PRODUCT,
+                    map), HttpStatus.OK);
+        }
+    }
+
+    /*
+        GET / productId으로 상품 리스트 조회 / Return : List<Product>
+     */
+    @ApiOperation(value = "productId으로 조회", tags = "상품 관리",
+            httpMethod = "GET",
+            notes = "productId을 사용하여 상품을 조회할 때 사용되는 API입니다."
+    )
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
+    @GetMapping("/product/products")
+    public ResponseEntity getProductsByProductId() {
+        var products = productService.loadProductsByProductIdBetween(1L, 5L);
+        if (products.isEmpty()) {
+            Map<String, String> map = new HashMap<>();
+            map.put("result","false");
+
+            return new ResponseEntity(DefaultResponse.res(
+                    StatusCode.NOT_FOUND,
+                    ResponseMessage.NOT_FOUND_PRODUCT,
+                    map), HttpStatus.OK);
+        } else {
+            Map<String, List<Product>> map = new HashMap<>();
+
+            map.put("result", products);
+
+            return new ResponseEntity(DefaultResponse.res(
+                    StatusCode.OK,
+                    ResponseMessage.PRODUCT_SUCCESS,
                     map), HttpStatus.OK);
         }
     }
