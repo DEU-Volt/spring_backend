@@ -1,0 +1,58 @@
+server:
+  port: 18083
+spring:
+  profiles:
+    active: dev
+  application:
+    name: transaction-service
+  jpa:
+    database: mysql
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3308/spring?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    initialization-mode: always
+  boot:
+    admin:
+      client:
+        url: http://localhost:8081
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/, http://localhost2:8762/eureka/
+      register-with-eureka: false
+      fetch-registry: false
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+
+
+security:
+  oauth2:
+    client:
+      client-id: volt-android
+      client-secret: volt
+    authorization:
+      token-key-access: isAuthenticated()
+    resource:
+      #      token-info-uri: http://localhost:9000/oauth/check_token
+      jwt:
+        key-uri: http://localhost:9000/oauth/token_key
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
