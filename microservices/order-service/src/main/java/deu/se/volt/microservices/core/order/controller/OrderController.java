@@ -3,6 +3,8 @@ package deu.se.volt.microservices.core.order.controller;
 import deu.se.volt.microservices.core.order.entity.OrderEntity;
 import deu.se.volt.microservices.core.order.entity.OrderStatusType;
 import deu.se.volt.microservices.core.order.entity.OrderType;
+import deu.se.volt.microservices.core.order.exception.AlreadyOrderException;
+import deu.se.volt.microservices.core.order.exception.AlreadyPriceException;
 import deu.se.volt.microservices.core.order.form.OrderForm;
 import deu.se.volt.microservices.core.order.service.OrderService;
 import deu.se.volt.microservices.core.order.util.DefaultResponse;
@@ -116,6 +118,14 @@ public class OrderController {
         }
     }
 
+    /*
+        /POST ORDER API
+    */
+    @ApiOperation(value = "주문 등록", tags = "주문 관리",
+            httpMethod = "POST",
+            notes = "주문을 생성하는 API"
+    )
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
     @PostMapping("/order")
     public ResponseEntity postOrder(@RequestHeader(value="Authorization") String accessToken, @RequestBody @Valid OrderForm orderForm) {
          // JWT Token to username
@@ -139,30 +149,52 @@ public class OrderController {
                      ResponseMessage.NOT_FOUND_PRODUCT,
                      map), HttpStatus.OK);
 
-        }
+        } catch (AlreadyOrderException alreadyOrderException) {
+             Map<String, String> map = new HashMap<>();
+             map.put("result","false");
+
+             return new ResponseEntity(DefaultResponse.res(
+                     StatusCode.BAD_REQUEST,
+                     ResponseMessage.ORDER_INPUT_FAILED_2,
+                     map), HttpStatus.OK);
+
+         } catch (AlreadyPriceException alreadyPriceException) {
+             Map<String, String> map = new HashMap<>();
+             map.put("result","false");
+
+             return new ResponseEntity(DefaultResponse.res(
+                     StatusCode.BAD_REQUEST,
+                     ResponseMessage.ORDER_INPUT_FAILED_1,
+                     map), HttpStatus.OK);
+         }
     }
 
-//    @DeleteMapping("/order/{path}")
-//    public ResponseEntity getProductByProductName(@PathVariable("orderId") @Valid final int orderId) {
-//
-//        try {
-//            Map<String, Product> map = new HashMap<>();
-//            var product = productService.loadProductByProductName(productName);
-//            map.put("result", product);
-//
-//            return new ResponseEntity(DefaultResponse.res(
-//                    StatusCode.OK,
-//                    ResponseMessage.PRODUCT_SUCCESS,
-//                    map), HttpStatus.OK);
-//
-//        } catch (NoSuchElementException elementException) {
-//            Map<String, String> map = new HashMap<>();
-//            map.put("result","false");
-//
-//            return new ResponseEntity(DefaultResponse.res(
-//                    StatusCode.NOT_FOUND,
-//                    ResponseMessage.NOT_FOUND_PRODUCT,
-//                    map), HttpStatus.OK);
-//        }
-//    }
+    @ApiOperation(value = "주문 삭제", tags = "주문 관리",
+            httpMethod = "DELETE",
+            notes = "주문 ID를 입력시 주문을 삭제하는 API"
+    )
+    @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
+    @DeleteMapping("/order/{orderIdx}")
+    /*
+        /DELETE ORDER API
+     */
+    public ResponseEntity deleteOrder(@PathVariable Long orderIdx) {
+        Map<String, String> map = new HashMap<>();
+        if(orderService.deleteOrderEntityById(orderIdx)) {
+            map.put("result", "true");
+            return new ResponseEntity(DefaultResponse.res(
+                    StatusCode.OK,
+                    ResponseMessage.ORDER_DELETE_SUCCESS,
+                    map), HttpStatus.OK);
+        } else {
+            map.put("result", "false");
+            return new ResponseEntity(DefaultResponse.res(
+                    StatusCode.NOT_FOUND,
+                    ResponseMessage.ORDER_DELETE_FAILED,
+                    map), HttpStatus.OK);
+
+        }
+
+
+    }
 }
