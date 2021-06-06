@@ -17,4 +17,5 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
     List<OrderEntity> findOrderEntitiesByModelNameAndOrderStatusTypeAndOrderTypeOrderByOrderPriceAscCreatedAtAsc(String modelName, OrderStatusType orderStatusType, OrderType orderType);
 
     List<OrderEntity> findOrderEntitiesByModelNameAndOrderStatusTypeAndOrderTypeOrderByOrderPriceDescCreatedAtAsc(String modelName, OrderStatusType orderStatusType, OrderType orderType);
+
 }
