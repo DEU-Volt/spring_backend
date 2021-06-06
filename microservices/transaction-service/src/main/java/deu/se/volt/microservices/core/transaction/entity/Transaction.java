@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Entity
 @Data
-public class Transaction {
+public class Transaction extends BaseEntity{
     // 자동으로 생성되는 주문 내역 ID(PRIMARY KEY)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
