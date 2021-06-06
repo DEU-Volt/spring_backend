@@ -55,6 +55,4 @@ public class Product {
     @LastModifiedDate
     @NotBlank
     private LocalDateTime updated_at;
-
-
 }
