@@ -1,15 +1,15 @@
 server:
-  port: 18081
+  port: 18082
 spring:
   profiles:
     active: dev
   application:
-    name: product-service
+    name: order-service
   jpa:
     database: mysql
     properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate.format_sql: true
@@ -36,6 +36,14 @@ eureka:
     leaseRenewalIntervalInSeconds: 5
     leaseExpirationDurationInSeconds: 5
 
+restTemplate:
+  factory:
+    readTimeout: 5000
+    connectTimeout: 3000
+  httpClient:
+    maxConnTotal: 100
+    maxConnPerRoute: 5
+
 
 
 security:
@@ -55,4 +63,3 @@ management:
     web:
       exposure:
         include: "*"
-
