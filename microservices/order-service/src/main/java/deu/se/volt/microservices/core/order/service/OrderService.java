@@ -10,16 +10,22 @@ import deu.se.volt.microservices.core.order.response.ProductResponse;
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.criterion.Order;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -28,8 +34,7 @@ import java.util.*;
 @Slf4j
 public class OrderService {
     private final OrderRepository orderRepository;
-
-
+    private final ObjectMapper objectMapper = new ObjectMapper();
     public List<OrderEntity> loadOrderByUsername(String userName) {
         return orderRepository.findOrderEntitiesByUsername(userName);
     }
@@ -63,12 +68,15 @@ public class OrderService {
             // 해당 주문보다 유리한 주문이 존재할 경우 해당 오더를 결제 서비스로 이관 -> 성공시 오더 삭제
             else if (priceCheckMap.containsKey(false)) {
                 // 결제 서비스로 리다이렉트하기
+                if (redirectTransaction(accessToken,orderEntity,priceCheckMap.get(false))) {
+                    deleteOrderEntityByEntity(priceCheckMap.get(false));
+                    log.info("결제시스템으로 주문이 이관되어 삭제되었습니다 : {}",priceCheckMap.get(false).getOrderIdx());
+                    throw new AlreadyPriceException();
+                }
 
                 // 임시 오더 삭제
                 // if (deleteOrderEntity(orderEntity))
-                log.info("결제시스템으로 주문이 이관되어 삭제되었습니다 : {}",priceCheckMap.get(false).getOrderIdx());
-                deleteOrderEntityByEntity(priceCheckMap.get(false));
-                throw new AlreadyPriceException();
+
             }
         } catch (NullPointerException | RestClientException exception) {
             log.error(exception.toString());
@@ -113,6 +121,40 @@ public class OrderService {
         }
         returnMap.put(true, null);
         return returnMap;
+    }
+
+    private boolean redirectTransaction(String accessToken, OrderEntity userOrderEntity, OrderEntity otherOrderEntity) {
+        var header = new HttpHeaders();
+        header.add(HttpHeaders.AUTHORIZATION, accessToken);
+        header.setContentType(new MediaType("application", "json", Charset.forName("UTF-8")));
+
+        Map<String, Object> map = new HashMap<>();
+        if(userOrderEntity.getOrderType() == OrderType.BUY) {
+            map.put("seller", otherOrderEntity.getUsername());
+            map.put("buyer", userOrderEntity.getUsername());
+        }
+        else if(userOrderEntity.getOrderType() == OrderType.SELL) {
+            map.put("seller", userOrderEntity.getUsername());
+            map.put("buyer", otherOrderEntity.getUsername());
+        }
+        map.put("modelName", userOrderEntity.getModelName());
+        map.put("transactionPrice", userOrderEntity.getOrderPrice());
+        map.put("productGrade", userOrderEntity.getProductGrade());
+
+
+        String body = null;
+        try {
+            body = objectMapper.writeValueAsString(map);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(body != null) {
+            var response = new RestTemplate().exchange("http://localhost:18083/transaction"
+                    , HttpMethod.POST, new HttpEntity(body, header), ProductResponse.class);
+            return Objects.requireNonNull(response.getBody()).getStatusCode() == 200;
+        }
+            return false;
     }
 
     /*
