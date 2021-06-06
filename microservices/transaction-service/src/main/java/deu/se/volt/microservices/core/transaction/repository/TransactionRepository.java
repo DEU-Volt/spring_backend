@@ -19,5 +19,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     List<Transaction> findTransactionsBySeller(String seller);
 
-    List<Transaction> findTransactionsByBuyerOrSeller(String userName, String userName2);
+    List<Transaction> findTransactionsByBuyerOrSeller(String buyer, String seller);
 }
