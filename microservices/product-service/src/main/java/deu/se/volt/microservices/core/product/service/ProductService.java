@@ -5,6 +5,7 @@ import deu.se.volt.microservices.core.product.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -18,9 +19,8 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Product loadProductByProductName(String productName) throws NoSuchElementException {
-
-        return productRepository.findByProductName(productName).orElseThrow();
+    public List<Product> loadProductByProductName(String productName) {
+        return productRepository.findByProductName(productName);
     }
 
     public Product loadProductByModelName(String modelName) {
@@ -29,5 +29,9 @@ public class ProductService {
     
     public Product loadProductByManufacturer(String manufacturer) {
         return productRepository.findByManufacturer(manufacturer).orElseThrow();
+    }
+
+    public List<Product> loadProductsByProductIdBetween(Long start, Long end) {
+        return productRepository.findProductsByProductIdBetween(start, end);
     }
 }
