@@ -47,6 +47,7 @@ public class DailyStatisticsTasklet implements Tasklet, StepExecutionListener {
                     .lowestPrice(summaryStatistics.getMin())
                     .avgPrice(summaryStatistics.getAverage())
                     .localDate(groupingMap.get(key).get(0).getCreatedAt().toLocalDate())
+                    .transactionCount(groupingMap.get(key).size())
                     .modelName(key)
                     .build();
             statisticsRepository.save(dailyStatistics);
