@@ -34,5 +34,4 @@ public class Transaction extends BaseEntity{
     @NotNull
     @Enumerated(EnumType.STRING)
     private ProductGrade productGrade;
-
 }
