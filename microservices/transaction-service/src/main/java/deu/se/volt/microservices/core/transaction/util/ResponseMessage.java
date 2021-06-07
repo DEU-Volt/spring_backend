@@ -17,5 +17,7 @@ public class ResponseMessage {
     public static final String TRANSACTION_REG_SUCCESS = "내역 등록 성공";
     public static final String TRANSACTION_SUCCESS = "내역 조회 성공";
     public static final String NOT_FOUND_TRANSACTION = "내역을 찾을 수 없습니다.";
+    public static final String NOT_FOUND_DAILY_STATISTICS = "해당 물품에 대한 통계 내역을 찾을 수 없습니다";
+    public static final String STATISTICS_SUCCESS = "통계내역 조회 성공";
 
 }

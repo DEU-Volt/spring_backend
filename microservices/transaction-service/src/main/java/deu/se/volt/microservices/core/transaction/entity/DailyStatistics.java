@@ -40,6 +40,10 @@ public class DailyStatistics extends BaseEntity{
 
     @Column
     @NotNull
+    private int transactionCount;
+
+    @Column
+    @NotNull
     private LocalDate localDate;
 
 }
