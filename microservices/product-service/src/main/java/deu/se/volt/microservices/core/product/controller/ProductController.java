@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import java.util.*;
 @RestController
 @Api("상품 컨트롤러 V1")
 @AllArgsConstructor
+@Slf4j
 public class ProductController {
     private final ProductService productService;
 
@@ -33,20 +35,21 @@ public class ProductController {
     public ResponseEntity getProductsBySearchStr(@PathVariable("searchStr") @Valid final String searchStr) {
         //  정규 표현식을 이용한 검색어 수정
         var fixedStr = searchStr;
-//        var iPhoneList = Arrays.asList(new String[]{"iphone","iPhone","IPNONE"});
-//        var iPadList = Arrays.asList(new String[]{"ipad","iPad","IPAD"});
-//        var galaxyList = Arrays.asList(new String[]{"galaxy","GALAXY", "겔럭시"});
-//        for (String str: iPhoneList) {
-//            fixedStr = fixedStr.replace(str, "아이폰");
-//        }
-//        for (String str: iPadList) {
-//            fixedStr = fixedStr.replace(str, "아이패드");
-//        }
-//        for (String str: galaxyList) {
-//            fixedStr = fixedStr.replace(str, "갤럭시");
-//        }
-//
-//        fixedStr = fixedStr.replaceAll("([ㄱ-ㅎㅏ-ㅣ가-힣0-9]+)|([\\^\\-][a-zA-Z0-9]+)","$0 ");
+        var iPhoneList = Arrays.asList(new String[]{"iphone","iPhone","IPHONE"});
+        var iPadList = Arrays.asList(new String[]{"ipad","iPad","IPAD"});
+        var galaxyList = Arrays.asList(new String[]{"galaxy","GALAXY", "겔럭시"});
+        for (String str: iPhoneList) {
+            fixedStr = fixedStr.replace(str, "아이폰");
+        }
+        for (String str: iPadList) {
+            fixedStr = fixedStr.replace(str, "아이패드");
+        }
+        for (String str: galaxyList) {
+            fixedStr = fixedStr.replace(str, "갤럭시");
+        }
+        fixedStr = fixedStr.toUpperCase();
+        fixedStr = fixedStr.replace(" ", "");
+        fixedStr = fixedStr.replaceAll("([갤럭시]+)|([ㄱ-ㅎㅏ-ㅣ가-힣][0-9]+)|([\\^\\-][a-zA-Z][0-9]+)","$0 ");
         var products = productService.loadProductsBySearchStr(fixedStr);
         if (products.isEmpty()) {
             Map<String, String> map = new HashMap<>();

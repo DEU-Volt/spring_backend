@@ -36,6 +36,6 @@ public class ProductService {
     }
 
     public List<Product> loadProductsBySearchStr(String searchStr) {
-        return productRepository.findProductsByModelNameContaining(searchStr);
+        return productRepository.findProductsByModelNameContainingOrProductNameContaining(searchStr, searchStr);
     }
 }
