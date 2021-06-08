@@ -36,7 +36,7 @@ public class StatisticsController {
     )
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
 
-    @GetMapping("/statistics/{modelName}")
+    @GetMapping("/transaction/statistics/{modelName}")
     public ResponseEntity getDailyStatisticsByModelName(@PathVariable("modelName") @Valid final String modelName) {
         var statistics = statisticsService.loadDailyStatisticsByModelName(modelName);
 
@@ -66,7 +66,7 @@ public class StatisticsController {
             notes = "모델명과 날짜를 사용하여 일일 통계치를 조회할 때 사용되는 API 입니다."
     )
     @ApiImplicitParam(name = "Authorization", value = "Access Token", required = true, allowEmptyValue = false, paramType = "header", dataTypeClass = String.class, example = "Bearer access_token")
-    @GetMapping("/statistics/{modelName}/{localDate}")
+    @GetMapping("/transaction/statistics/{modelName}/{localDate}")
     public ResponseEntity getDailyStatisticsByModelNameAndLocalDate(@PathVariable("modelName")@Valid final String modelName
                                                                     ,@PathVariable("localDate")@DateTimeFormat(pattern="yyyy-MM-dd")@Valid final LocalDate localDate) {
         try {

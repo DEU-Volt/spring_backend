@@ -18,8 +18,8 @@ public class GenerateDailyStatisticsScheduler {
     private final JobLauncher jobLauncher;
 
     // 5초마다 실행
-//    @Scheduled(cron = "0 1 24 * * *")
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 48 5 * * ?")
+//    @Scheduled(cron = "0 0/1 * * * ?")
     public void executeJob () {
         try {
             jobLauncher.run(

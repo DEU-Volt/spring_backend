@@ -14,7 +14,7 @@ zuul:
       url: order-service
 
     transaction-service:
-      path: /transaction/**, /statistics/**
+      path: /transaction/**
       serviceId: transaction-service
       stripPrefix: false
       url: transaction-service

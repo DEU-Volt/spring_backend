@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 public class Transaction extends BaseEntity{
     // 자동으로 생성되는 주문 내역 ID(PRIMARY KEY)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
 
     @Column

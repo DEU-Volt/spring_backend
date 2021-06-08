@@ -28,12 +28,12 @@ public class TransactionService {
 
     public List<Transaction> loadYesterdayAllTransactions() {
         log.info("loadYesterdayAllTransactions : called");
-//        return transactionRepository.findTransactionsByCreatedAtBetweenOrderByModelNameAscCreatedAtAsc
-//                (LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0))
-//                        ,LocalDateTime.of(LocalDate.now().minusDays(1),LocalTime.of(23,59)));
         return transactionRepository.findTransactionsByCreatedAtBetweenOrderByModelNameAscCreatedAtAsc
-                (LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0))
-                        ,LocalDateTime.of(LocalDate.now(),LocalTime.of(23,59)));
+                (LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0,0))
+                        ,LocalDateTime.of(LocalDate.now().minusDays(1),LocalTime.of(23,59)));
+//        return transactionRepository.findTransactionsByCreatedAtBetweenOrderByModelNameAscCreatedAtAsc
+//                (LocalDateTime.of(LocalDate.now(), LocalTime.of(0,0))
+//                        ,LocalDateTime.of(LocalDate.now(),LocalTime.of(23,59)));
     }
 
     public List<Transaction> loadTransactionsByModelName(String modelName){
