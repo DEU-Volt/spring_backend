@@ -13,6 +13,12 @@ zuul:
       stripPrefix: false
       url: order-service
 
+    transaction-service:
+      path: /transaction/**
+      serviceId: transaction-service
+      stripPrefix: false
+      url: transaction-service
+
     swagger-service:
       path: /api/**
       serviceId: swagger-server

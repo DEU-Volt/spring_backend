@@ -34,4 +34,8 @@ public class ProductService {
     public List<Product> loadProductsByProductIdBetween(Long start, Long end) {
         return productRepository.findProductsByProductIdBetween(start, end);
     }
+
+    public List<Product> loadProductsBySearchStr(String searchStr) {
+        return productRepository.findProductsByModelNameContainingOrProductNameContaining(searchStr, searchStr);
+    }
 }

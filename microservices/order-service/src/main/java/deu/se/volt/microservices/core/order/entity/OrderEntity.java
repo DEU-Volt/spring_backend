@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(indexes = @Index(name = "i_modelName",columnList = "modelName"))
 public class OrderEntity extends BaseEntity{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long orderIdx;
 
     @Column(nullable = false)

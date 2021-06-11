@@ -17,4 +17,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Optional<Product> findByManufacturer(String manufacturer);
 
     List<Product> findProductsByProductIdBetween(Long start, Long end);
+
+    List<Product> findProductsByModelNameContainingOrProductNameContaining(String modelName, String productName);
 }

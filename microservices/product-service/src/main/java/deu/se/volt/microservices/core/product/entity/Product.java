@@ -16,7 +16,7 @@ public class Product {
 
     // 자동으로 생성되는 상품 ID(PRIMARY KEY)
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
 
     // 상품명
@@ -55,6 +55,4 @@ public class Product {
     @LastModifiedDate
     @NotBlank
     private LocalDateTime updated_at;
-
-
 }
